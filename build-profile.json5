@@ -3,10 +3,10 @@
     "products": [
       {
         "name": "default",
-        "signingConfig": "release",
-        "compileSdkVersion": 14,
-        "compatibleSdkVersion": 14,
-        "targetSdkVersion": 14,
+        "signingConfig": "default",
+        "compileSdkVersion": 18,
+        "compatibleSdkVersion": 18,
+        "targetSdkVersion": 18,
         "runtimeOS": "OpenHarmony",
       }
     ],
