@@ -1,6 +1,5 @@
 {
   "module": {
-    "requestPermissions":[],
     "name": "screenshot",
     "type": "har",
     "deviceTypes": [
