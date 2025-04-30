@@ -67,7 +67,13 @@
         "name": "ohos.permission.START_ABILITIES_FROM_BACKGROUND"
       },
       {
-        "name": "ohos.permission.WRITE_IMAGEVIDEO"
+        "name": "ohos.permission.WRITE_IMAGEVIDEO",
+        "reason": "$string:write_imagevideo_desc",
+        "usedScene": {
+            "abilities": [
+                "ServiceExtAbility"
+            ],
+        }
       }
     ]
   }
