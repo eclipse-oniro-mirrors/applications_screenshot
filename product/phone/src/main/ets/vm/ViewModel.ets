@@ -31,7 +31,6 @@ export class ViewModel {
   }
 
   StartPhotosAbility(imageFileName: string): void {
-    Log.showInfo(TAG, `StartPhotosAbility imageFileName:${imageFileName}`);
     const wantData: Want = {
       bundleName: GALLERY_BUNDLE,
       abilityName: GALLERY_ABILITY,

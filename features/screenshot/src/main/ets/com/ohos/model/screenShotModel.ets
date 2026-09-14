@@ -42,7 +42,7 @@ export class ScreenShotModel {
     WindowMar.notifyScreenshotEvent(WindowMar.ScreenshotEventType.SYSTEM_SCREENSHOT);
     await new Promise<number>((resolve) => setTimeout(resolve, CREATE_WINDOW_DELAY));
     ScreenshotManager.save().then(async (data) => {
-      Log.showInfo(TAG, `ScreenshotManager.save data:${JSON.stringify(data)}`);
+      Log.showInfo(TAG, `ScreenshotManager.save data:${!!data}`);
       if (!!data) {
         this.captureImage = data;
         AppStorage.Set('captureImage', data);
@@ -80,7 +80,6 @@ export class ScreenShotModel {
       fileAsset = await userFileMgr.createPhotoAsset(this.imageFileName, createOption);
 
       AppStorage.setOrCreate('imageUri', fileAsset.uri);
-      Log.showInfo(TAG, `fileAsset uri: ${fileAsset.uri}`);
 
       fd = await fileAsset.open('w');
       await file.write(fd, packedImg);
