@@ -119,7 +119,7 @@ export class ScreenShotModel {
   }
 
   openAbility(wantData: Want) {
-    Log.showInfo(TAG, `openAbility want boundleName:${wantData?.boundleName ?? 'unknown'}`);
+    Log.showInfo(TAG, `openAbility want:${JSON.stringify(wantData)}`);
     globalThis.shotScreenContext.startAbility(wantData);
   }
 }
