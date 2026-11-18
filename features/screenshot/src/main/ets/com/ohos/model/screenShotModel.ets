@@ -43,10 +43,10 @@ export class ScreenShotModel {
     await new Promise<number>((resolve) => setTimeout(resolve, CREATE_WINDOW_DELAY));
     ScreenshotManager.save().then(async (data) => {
       Log.showInfo(TAG, `ScreenshotManager.save data:${!!data}`);
-      if (!!data) {
+      if (data != null) {
         this.captureImage = data;
         AppStorage.Set('captureImage', data);
-        this.saveImage(this.captureImage, {
+        await this.saveImage(this.captureImage, {
           format: 'image/jpeg',
           quality: OPTIONS_QUALITY,
         });
@@ -99,9 +99,15 @@ export class ScreenShotModel {
   showWindow() {
     Log.showInfo(TAG, 'showWindow');
     WindowMar.find(Constants.WIN_NAME).then((win) => {
-      win.show(() => {
+      win.show((err: BusinessError) => {
+        if (err) {
+          Log.showError(TAG, `window show err:${JSON.stringify(err)}`);
+          return;
+        }
         Log.showInfo(TAG, 'window show');
       });
+    }).catch((err: BusinessError) => {
+      Log.showError(TAG, `find window err:${JSON.stringify(err)}`);
     });
   }
 
@@ -109,18 +115,30 @@ export class ScreenShotModel {
     Log.showInfo(TAG, 'dismiss');
     //close ability
     globalThis.shotScreenContext.terminateSelf((err: BusinessError) => {
-      Log.showInfo(TAG, `terminateSelf finish err:${err}`);
+      if (err) {
+        Log.showError(TAG, `terminateSelf err:${JSON.stringify(err)}`);
+        return;
+      }
+      Log.showInfo(TAG, 'terminateSelf finish');
       WindowMar.find(Constants.WIN_NAME).then((win) => {
-        win.destroy(() => {
+        win.destroy((destroyErr: BusinessError) => {
+          if (destroyErr) {
+            Log.showError(TAG, `window destroy err:${JSON.stringify(destroyErr)}`);
+            return;
+          }
           Log.showInfo(TAG, 'destroy the window finish');
         });
+      }).catch((findErr: BusinessError) => {
+        Log.showError(TAG, `find window err:${JSON.stringify(findErr)}`);
       });
     });
   }
 
   openAbility(wantData: Want) {
     Log.showInfo(TAG, `openAbility want:${JSON.stringify(wantData)}`);
-    globalThis.shotScreenContext.startAbility(wantData);
+    globalThis.shotScreenContext.startAbility(wantData).catch((err: BusinessError) => {
+      Log.showError(TAG, `startAbility err:${JSON.stringify(err)}`);
+    });
   }
 }
 
