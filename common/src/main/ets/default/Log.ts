@@ -20,11 +20,22 @@ const DOMAIN = 0x55EE;
 const FORMAT = '%{public}s';
 const PREFIX = '[Screenshot]';
 const SEPARATOR = ' ';
+const LINE_BREAK_REGEX = /[\r\n]/g;
 
 /**
  * Basic log class
  */
 export default class Log {
+    /**
+     * Filter out CR/LF characters to prevent log injection
+     *
+     * @param {any} value - Value to be sanitized
+     * @returns {string} sanitized string
+     */
+    private static sanitize(value): string {
+        return String(value).replace(LINE_BREAK_REGEX, ' ');
+    }
+ 
     /**
      * print info level log
      *
@@ -32,7 +43,8 @@ export default class Log {
      * @param {string} log - Log needs to be printed
      */
     static showInfo(tag: string, ...args: string[]) {
-        hiLog.info(DOMAIN, PREFIX, FORMAT, `tag: ${tag} --> ${args.join(SEPARATOR)}`);
+        hiLog.info(DOMAIN, PREFIX, FORMAT,
+            `tag: ${Log.sanitize(tag)} --> ${args.map((arg) => Log.sanitize(arg)).join(SEPARATOR)}`);
     }
 
     /**
@@ -42,7 +54,8 @@ export default class Log {
      * @param {string} log - Log needs to be printed
      */
     static showDebug(tag: string, ...args: string[]) {
-        hiLog.debug(DOMAIN, PREFIX, FORMAT, `tag: ${tag} --> ${args.join(SEPARATOR)}`);
+        hiLog.debug(DOMAIN, PREFIX, FORMAT,
+            `tag: ${Log.sanitize(tag)} --> ${args.map((arg) => Log.sanitize(arg)).join(SEPARATOR)}`);
     }
 
     /**
@@ -52,6 +65,7 @@ export default class Log {
      * @param {string} log - Log needs to be printed
      */
     static showError(tag: string, ...args: string[]) {
-        hiLog.error(DOMAIN, PREFIX, FORMAT, `tag: ${tag} --> ${args.join(SEPARATOR)}`);
+        hiLog.error(DOMAIN, PREFIX, FORMAT,
+            `tag: ${Log.sanitize(tag)} --> ${args.map((arg) => Log.sanitize(arg)).join(SEPARATOR)}`);
     }
 }
